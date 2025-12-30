@@ -6,6 +6,8 @@
   <persistence-unit name="default">
 
     <class>ir.maktabsharif.models.Person</class>
+    <class>ir.maktabsharif.models.Teacher</class>
+    <class>ir.maktabsharif.models.Student</class>
 
     <properties>
       <property
@@ -23,7 +25,7 @@
 <!--          sakht / update jadval ha -->
       <property
               name="hibernate.hbm2ddl.auto"
-              value="create"/>
+              value="update"/>
 
       <property
               name="hibernate.show_sql"

@@ -8,6 +8,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = Person.TABLE_NAME)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
