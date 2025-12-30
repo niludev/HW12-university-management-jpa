@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = Person.TABLE_NAME)
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -33,6 +35,6 @@ public class Person {
     private String lastName;
 
     @Column(name = BIRTH_DATE_COLUMN)
-    private String birthDate;
+    private LocalDate birthDate;
 
 }

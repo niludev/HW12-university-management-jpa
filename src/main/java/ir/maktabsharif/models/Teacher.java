@@ -1,9 +1,7 @@
 package ir.maktabsharif.models;
 
 import ir.maktabsharif.models.enums.Degree;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +25,7 @@ public class Teacher extends Person{
     @Column(name = QUALIFICATION_COLUMN)
     private String qualification;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = DEGREE_COLUMN)
     private Degree degree;
 
