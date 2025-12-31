@@ -2,6 +2,8 @@ package ir.maktabsharif.repositories;
 
 import ir.maktabsharif.config.JpaUtil;
 import ir.maktabsharif.models.Person;
+import ir.maktabsharif.models.Student;
+import ir.maktabsharif.models.Teacher;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
@@ -201,6 +203,43 @@ public class PersonRepositoryImpl implements PersonRepository{
 
 //        return true;
     }
+
+    @Override
+    public Optional<Person> findById(Long id) {
+        if (id == null) return Optional.empty();
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return Optional.ofNullable(em.find(Person.class, id));
+        } finally {
+            em.close();
+        }
+    }
+
+    public Optional<Student> findByStudentCode(String code) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                            "select s from Student s where s.studentCode = :code", Student.class)
+                    .setParameter("code", code)
+                    .getResultStream().findFirst();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Optional<Teacher> findByTeacherCode(String code) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                            "select t from Teacher t where t.teacherCode = :code", Teacher.class)
+                    .setParameter("code", code)
+                    .getResultStream().findFirst();
+        } finally {
+            em.close();
+        }
+    }
+
+
 
 //    @Override
 //    public Optional<Person> findByCode(String code) {

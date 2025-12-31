@@ -21,7 +21,7 @@ public class Student extends Person{
     public static final String FIELD_OF_STUDY_COLUMN = "field_of_study";
     public static final String ENTRY_YEAR_COLUMN = "entry_year";
 
-    @Column(name = STUDENT_CODE_COLUMN)
+    @Column(name = STUDENT_CODE_COLUMN, unique = true, nullable = false)
     private String studentCode;
 
     @Column(name = FIELD_OF_STUDY_COLUMN)

@@ -19,7 +19,7 @@ public class Teacher extends Person{
     public static final String DEGREE_COLUMN = "degree";
     public static final String MONTHLY_SALARY_COLUMN = "monthly_salary";
 
-    @Column(name = TEACHER_CODE_COLUMN)
+    @Column(name = TEACHER_CODE_COLUMN, unique = true, nullable = false)
     private String teacherCode;
 
     @Column(name = QUALIFICATION_COLUMN)

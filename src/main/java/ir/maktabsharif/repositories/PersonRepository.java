@@ -1,6 +1,8 @@
 package ir.maktabsharif.repositories;
 
 import ir.maktabsharif.models.Person;
+import ir.maktabsharif.models.Student;
+import ir.maktabsharif.models.Teacher;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +22,10 @@ public interface PersonRepository {
     // ye method baraye peyda kardane
     // age null shod error nakhore --> baraye hamin Optional
 //    Optional<Person> findByCode(String code);
+
+    Optional<Person> findById(Long id);
+
+    Optional<Student> findByStudentCode(String code);
+    Optional<Teacher> findByTeacherCode(String code);
 
 }
