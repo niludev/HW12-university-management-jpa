@@ -1,5 +1,8 @@
 package ir.maktabsharif;
 
+import ir.maktabsharif.config.ApplicationContext;
+import ir.maktabsharif.config.JpaUtil;
+import ir.maktabsharif.view.UniversityConsoleApp;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -9,11 +12,13 @@ import jakarta.persistence.Persistence;
 public class Main {
     public static void main(String[] args) {
 
-        try(EntityManagerFactory emf = Persistence.createEntityManagerFactory("default")) {
-            try(EntityManager em = emf.createEntityManager()) {
+        try {
+            UniversityConsoleApp app = ApplicationContext.getInstance().createApp();
 
+            app.run();
 
-            }
+        } finally {
+            JpaUtil.close();
         }
     }
 }

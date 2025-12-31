@@ -1,10 +1,15 @@
 package ir.maktabsharif.config;
 
 
+import ir.maktabsharif.dto.StudentSignUpDto;
+import ir.maktabsharif.dto.TeacherSignUpDto;
+import ir.maktabsharif.models.Student;
+import ir.maktabsharif.models.Teacher;
 import ir.maktabsharif.repositories.PersonRepository;
 import ir.maktabsharif.repositories.PersonRepositoryImpl;
 import ir.maktabsharif.services.PersonService;
-import ir.maktabsharif.services.PersonServiceImpl;
+import ir.maktabsharif.services.StudentServiceImpl;
+import ir.maktabsharif.services.TeacherServiceImpl;
 import ir.maktabsharif.view.UniversityConsoleApp;
 
 public class ApplicationContext {
@@ -15,7 +20,8 @@ public class ApplicationContext {
     private PersonRepository personRepository;
 
     // Services
-    private PersonService personService;
+    private PersonService<TeacherSignUpDto, Teacher> teacherService;
+    private PersonService<StudentSignUpDto, Student> studentService;
 
     private ApplicationContext() {}
 
@@ -28,7 +34,8 @@ public class ApplicationContext {
 
     public UniversityConsoleApp createApp() {
         return new UniversityConsoleApp(
-                getPersonService()
+                getTeacherService(),
+                getStudentService()
         );
     }
 
@@ -45,10 +52,17 @@ public class ApplicationContext {
 
     // ---------- Services ----------
 
-    public PersonService getPersonService() {
-        if(personService == null) {
-            personService = new PersonServiceImpl(getPersonRepository());
+    public PersonService<TeacherSignUpDto, Teacher> getTeacherService() {
+        if(teacherService == null) {
+            teacherService = new TeacherServiceImpl(getPersonRepository());
         }
-        return personService;
+        return teacherService;
+    }
+
+    public PersonService<StudentSignUpDto, Student> getStudentService() {
+        if(studentService == null) {
+            studentService = new StudentServiceImpl(getPersonRepository());
+        }
+        return studentService;
     }
 }

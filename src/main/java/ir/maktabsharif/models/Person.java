@@ -10,6 +10,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = Person.TABLE_NAME)
+// sotun haye null nadarim, Db tamiz tare, khundane dade haye farzandan rahat tar va inke mitunim hameye Person haro begirim (niazi be Union nadarim)
+// hame jadval daran va har child be valed vasl hast
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter

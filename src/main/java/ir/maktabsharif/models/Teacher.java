@@ -30,5 +30,5 @@ public class Teacher extends Person{
     private Degree degree;
 
     @Column(name = MONTHLY_SALARY_COLUMN)
-    private double monthlySalary;
+    private Double monthlySalary;
 }

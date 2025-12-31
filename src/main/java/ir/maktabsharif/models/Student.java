@@ -28,5 +28,5 @@ public class Student extends Person{
     private String fieldOfStudy;
 
     @Column(name = ENTRY_YEAR_COLUMN)
-    private int entryYear;
+    private Integer entryYear;
 }
