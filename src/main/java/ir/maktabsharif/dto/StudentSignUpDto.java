@@ -26,7 +26,6 @@ public class StudentSignUpDto {
     private String fieldOfStudy;
 
     @Min(value = 1380, message = "Entry year must be after 1380.")
-    @Max(value = 1500, message = "Entry year seems invalid.")
     @Positive(message = "Entry year must be positive.")
     private Integer entryYear;
 

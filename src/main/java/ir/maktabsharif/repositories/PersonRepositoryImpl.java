@@ -7,13 +7,21 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PersonRepositoryImpl implements PersonRepository{
     @Override
     public Person save(Person person) {
 
+        if (person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+
+
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
+
+
 
         try {
             tx.begin();
@@ -25,8 +33,16 @@ public class PersonRepositoryImpl implements PersonRepository{
 
             return person;
 
+        } catch (PersistenceException e) {
+            if (tx.isActive()) tx.rollback();
+
+            // khataye DB
+            throw new RuntimeException("Database error while saving Person", e);
+
         } catch (RuntimeException e) {
-            if(tx.isActive()) tx.rollback();
+            if (tx.isActive()) tx.rollback();
+
+            // khataye gheyre montazere dg
             throw e;
 
         }finally {
@@ -36,6 +52,13 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public Person update(Person person) {
+
+        if (person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+        if (person.getId() == null) {
+            throw new IllegalArgumentException("Person ID is required for update");
+        }
 
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -66,8 +89,12 @@ public class PersonRepositoryImpl implements PersonRepository{
 
             return merged;
 
+        } catch (PersistenceException e) {
+            if (tx.isActive()) tx.rollback();
+            throw new RuntimeException("Database error while updating Person", e);
+
         } catch (RuntimeException e) {
-            if(tx.isActive()) tx.rollback();
+            if (tx.isActive()) tx.rollback();
             throw e;
 
         }finally {
@@ -77,6 +104,15 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public Person delete(Person person) {
+
+        if (person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+        if (person.getId() == null) {
+            throw new IllegalArgumentException("Person ID is required for delete");
+        }
+
+
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -98,8 +134,12 @@ public class PersonRepositoryImpl implements PersonRepository{
 
             return toDeletePerson;
 
+        } catch (PersistenceException e) {
+            if (tx.isActive()) tx.rollback();
+            throw new RuntimeException("Database error while deleting Person", e);
+
         } catch (RuntimeException e) {
-            if(tx.isActive()) tx.rollback();
+            if (tx.isActive()) tx.rollback();
             throw e;
 
         }finally {
@@ -119,7 +159,10 @@ public class PersonRepositoryImpl implements PersonRepository{
             ).getResultList();
 
         } catch (PersistenceException e) {
-            throw e;
+
+            // inja transaction nadarim faghat query khundan hast
+            throw new RuntimeException("Database error while loading all Persons", e);
+
 
         } finally {
             em.close();
@@ -129,11 +172,13 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public boolean contains(Person person) {
-        EntityManager em = JpaUtil.getEntityManager();
 
-        if(person.getId() == null) {
+        if (person == null || person.getId() == null) {
             return false;
         }
+
+
+        EntityManager em = JpaUtil.getEntityManager();
 
         try {
 
@@ -148,7 +193,7 @@ public class PersonRepositoryImpl implements PersonRepository{
             return em.find(Person.class, person.getId()) != null;
 
         } catch (PersistenceException e) {
-            throw e;
+            throw new RuntimeException("Database error while checking Person existence", e);
 
         } finally {
             em.close();
@@ -156,4 +201,15 @@ public class PersonRepositoryImpl implements PersonRepository{
 
 //        return true;
     }
+
+//    @Override
+//    public Optional<Person> findByCode(String code) {
+//        EntityManager em = JpaUtil.getEntityManager();
+//
+//        try {
+//            em.createQuery(
+//                    "select p from Person p where (TYPE(p) = Student and p.stu) or ()"
+//            )
+//        }
+//    }
 }

@@ -3,6 +3,7 @@ package ir.maktabsharif.services;
 import ir.maktabsharif.dto.StudentSignUpDto;
 import ir.maktabsharif.models.Student;
 import ir.maktabsharif.repositories.PersonRepository;
+import jakarta.persistence.PersistenceException;
 
 public class StudentServiceImpl implements PersonService<StudentSignUpDto, Student> {
 
@@ -15,7 +16,9 @@ public class StudentServiceImpl implements PersonService<StudentSignUpDto, Stude
     @Override
     public Student signUp(StudentSignUpDto dto) {
 
-        // TODO: validations
+        if (dto == null) {
+            throw new IllegalArgumentException("DTO cannot be null");
+        }
 
         Student student = new Student();
         student.setFirstName(dto.getFirstName());
@@ -25,6 +28,12 @@ public class StudentServiceImpl implements PersonService<StudentSignUpDto, Stude
         student.setFieldOfStudy(dto.getFieldOfStudy());
         student.setEntryYear(dto.getEntryYear());
 
-        return (Student) personRepository.save(student);
+
+        try {
+            return (Student) personRepository.save(student);
+        } catch (PersistenceException e) {
+            throw new RuntimeException("Error saving student: " + e.getMessage(), e);
+        }
+
     }
 }

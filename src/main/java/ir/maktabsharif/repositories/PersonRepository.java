@@ -3,6 +3,7 @@ package ir.maktabsharif.repositories;
 import ir.maktabsharif.models.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonRepository {
 
@@ -16,5 +17,8 @@ public interface PersonRepository {
 
     boolean contains(Person person);
 
+    // ye method baraye peyda kardane
+    // age null shod error nakhore --> baraye hamin Optional
+//    Optional<Person> findByCode(String code);
 
 }
