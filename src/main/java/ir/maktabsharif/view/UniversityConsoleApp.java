@@ -102,7 +102,11 @@ public class UniversityConsoleApp {
 
         dto.setEntryYear(readInt("Entry Year"));
 
-        if (!validateDto(dto)) return;
+        if (!validateDto(dto)) {
+            System.out.println("Student registration failed");
+            return;
+        }
+
 
         try {
             Student saved = studentService.signUp(dto);
@@ -134,7 +138,11 @@ public class UniversityConsoleApp {
         dto.setDegree(readDegree());
         dto.setMonthlySalary(readDouble("Monthly Salary"));
 
-        if (!validateDto(dto)) return;
+        if (!validateDto(dto)) {
+            System.out.println("Teacher registration failed");
+            return;
+        }
+
 
         try {
             Teacher saved = teacherService.signUp(dto);
@@ -238,7 +246,10 @@ public class UniversityConsoleApp {
         dto.setFieldOfStudy(ask("Field of Study"));
         dto.setEntryYear(readInt("Entry Year"));
 
-        if (!validateDto(dto)) return;
+        if (!validateDto(dto)) {
+            System.out.println("Student update failed");
+            return;
+        }
 
         try {
             studentService.update(code, dto);
@@ -262,7 +273,10 @@ public class UniversityConsoleApp {
         dto.setDegree(readDegree());
         dto.setMonthlySalary(readDouble("Monthly Salary"));
 
-        if (!validateDto(dto)) return;
+        if (!validateDto(dto)) {
+            System.out.println("Teacher update failed");
+            return;
+        }
 
         try {
             teacherService.update(code, dto);
