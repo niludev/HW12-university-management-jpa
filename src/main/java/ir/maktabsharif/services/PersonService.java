@@ -7,9 +7,9 @@ import java.util.List;
 public interface PersonService<D, T> {
     T signUp(D dto);
 
-    T update(Long id, D dto);
+    T update(String Code, D dto);
 
-    boolean deleteById(Long id);
+//    boolean deleteById(Long id);
 
     boolean deleteByCode(String code);  // studentCode / teacherCode
 

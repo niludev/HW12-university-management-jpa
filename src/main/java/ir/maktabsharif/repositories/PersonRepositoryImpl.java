@@ -205,15 +205,60 @@ public class PersonRepositoryImpl implements PersonRepository{
     }
 
     @Override
-    public Optional<Person> findById(Long id) {
-        if (id == null) return Optional.empty();
+    public Optional<Person> findByCode(String code) {
+        if (code == null || code.isBlank()) return Optional.empty();
+
         EntityManager em = JpaUtil.getEntityManager();
+
         try {
-            return Optional.ofNullable(em.find(Person.class, id));
+            return em.createQuery("""
+            select p
+            from Person p
+            where
+                (type(p) = Student and
+                 exists (
+                     select s.id 
+                     from Student s
+                        where s.id = p.id and s.studentCode = :code
+                 ))
+             or
+                (type(p) = Teacher and
+                 exists (
+                     select t.id 
+                     from Teacher t
+                        where t.id = p.id and t.teacherCode = :code
+                 ))
+        """, Person.class)
+                    .setParameter("code", code)
+                    .getResultStream().findFirst();
+
+//                    .getSingleResultOrNull();              //  vali moshkele uniq dare age az yeki bishtar bashe nayije error mide
+//                    return Optional.ofNullable(result);
+
+            // type(p) dar zamane runtime baresi mishe ke vaghan jensesh chie
+            // chera mitunim in kar ro konim? chon jadval haye Student va Teacher az Person ersbari kardan:
+            // @Inheritance(strategy = InheritanceType.JOINED)
+
+            // exists ham ke baresi mikone aya hadeaghal ye record ba in shart vojud darad ya na --> true or false
+
+
+
         } finally {
             em.close();
         }
+
     }
+
+//    @Override
+//    public Optional<Person> findById(Long id) {
+//        if (id == null) return Optional.empty();
+//        EntityManager em = JpaUtil.getEntityManager();
+//        try {
+//            return Optional.ofNullable(em.find(Person.class, id));
+//        } finally {
+//            em.close();
+//        }
+//    }
 
     public Optional<Student> findByStudentCode(String code) {
         EntityManager em = JpaUtil.getEntityManager();

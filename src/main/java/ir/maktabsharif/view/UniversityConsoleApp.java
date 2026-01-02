@@ -228,7 +228,7 @@ public class UniversityConsoleApp {
     // UPDATE METHODS
     // =======================
     private void updateStudent() {
-        Long id = readLong("Enter Student ID to update");
+        String code = ask("Enter Student Code to update");
 
         StudentSignUpDto dto = new StudentSignUpDto();
         dto.setFirstName(ask("New First Name"));
@@ -238,16 +238,20 @@ public class UniversityConsoleApp {
         dto.setFieldOfStudy(ask("Field of Study"));
         dto.setEntryYear(readInt("Entry Year"));
 
+        if (!validateDto(dto)) return;
+
         try {
-            studentService.update(id, dto);
-            System.out.println("Student Updated");
-        } catch (Exception e) {
+            studentService.update(code, dto);
+            System.out.println("Teacher Updated");
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
         }
     }
 
     private void updateTeacher() {
-        Long id = readLong("Enter Teacher ID to update");
+        String code = ask("Enter Teacher Code to update");
 
         TeacherSignUpDto dto = new TeacherSignUpDto();
         dto.setFirstName(ask("New First Name"));
@@ -258,11 +262,15 @@ public class UniversityConsoleApp {
         dto.setDegree(readDegree());
         dto.setMonthlySalary(readDouble("Monthly Salary"));
 
+        if (!validateDto(dto)) return;
+
         try {
-            teacherService.update(id, dto);
+            teacherService.update(code, dto);
             System.out.println("Teacher Updated");
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
         }
     }
 

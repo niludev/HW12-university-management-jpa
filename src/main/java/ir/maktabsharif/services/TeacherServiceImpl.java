@@ -20,7 +20,7 @@ public class TeacherServiceImpl implements PersonService<TeacherSignUpDto, Teach
     @Override
     public Teacher signUp(TeacherSignUpDto dto) {
 
-        if (personRepository.findByTeacherCode(dto.getTeacherCode()).isPresent()) {
+        if (personRepository.findByCode(dto.getTeacherCode()).isPresent()) {
             throw new IllegalArgumentException("Teacher code is already taken.");
         }
 
@@ -41,12 +41,17 @@ public class TeacherServiceImpl implements PersonService<TeacherSignUpDto, Teach
     }
 
     @Override
-    public Teacher update(Long id, TeacherSignUpDto dto) {
-        if (id == null) throw new IllegalArgumentException("ID cannot be null");
-        if (dto == null) throw new IllegalArgumentException("DTO cannot be null");
+    public Teacher update(String teacherCode, TeacherSignUpDto dto) {
 
-        Person p = personRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Teacher not found with ID: " + id));
+        if (teacherCode == null || teacherCode.isBlank()) {
+            throw new IllegalArgumentException("Teacher code is required");
+        }
+        if (dto == null) {
+            throw new IllegalArgumentException("DTO cannot be null");
+        }
+
+        Person p = personRepository.findByCode(teacherCode)
+                .orElseThrow(() -> new IllegalArgumentException("Teacher not found with Code: " + teacherCode));
 
         if (!(p instanceof Teacher)) {
             throw new IllegalArgumentException("This ID does not belong to a Teacher");
@@ -65,25 +70,25 @@ public class TeacherServiceImpl implements PersonService<TeacherSignUpDto, Teach
     }
 
 
-    @Override
-    public boolean deleteById(Long id) {
-        if (id == null) return false;
-
-        return personRepository.findById(id)
-                .filter(p -> p instanceof Teacher)
-                .map(p -> { personRepository.delete(p);
-                    return true;
-
-                })
-                .orElse(false);
-    }
+//    @Override
+//    public boolean deleteById(Long id) {
+//        if (id == null) return false;
+//
+//        return personRepository.findById(id)
+//                .filter(p -> p instanceof Teacher)
+//                .map(p -> { personRepository.delete(p);
+//                    return true;
+//
+//                })
+//                .orElse(false);
+//    }
 
 
     @Override
     public boolean deleteByCode(String code) {
         if (code == null || code.isBlank()) return false;
 
-        return personRepository.findByTeacherCode(code)
+        return personRepository.findByCode(code)
                 .map(t -> { personRepository.delete(t);
                     return true;
 

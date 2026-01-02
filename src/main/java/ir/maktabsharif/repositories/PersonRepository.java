@@ -19,13 +19,21 @@ public interface PersonRepository {
 
     boolean contains(Person person);
 
+    Optional<Person> findByCode(String code);
+
+
+
+//    Optional<Person> findById(Long id);
+
+
+
+
+//    Optional<Student> findByStudentCode(String code);
+//    Optional<Teacher> findByTeacherCode(String code);
+
+
     // ye method baraye peyda kardane
     // age null shod error nakhore --> baraye hamin Optional
 //    Optional<Person> findByCode(String code);
-
-    Optional<Person> findById(Long id);
-
-    Optional<Student> findByStudentCode(String code);
-    Optional<Teacher> findByTeacherCode(String code);
 
 }
